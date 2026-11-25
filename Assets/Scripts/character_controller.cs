@@ -1,61 +1,115 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 
+[RequireComponent(typeof(CharacterController))]
 public class character_controller : MonoBehaviour
 {
+    [SerializeField] private Transform cameraTransform;
+
+    [SerializeField] private float mouseSensitivity = 0.1f;
+    [SerializeField] private float minPitch = -85f;
+    [SerializeField] private float maxPitch = 85f;
+    [SerializeField] private bool lockCursor = true;
+
+    [SerializeField] private float moveSpeed = 5f;
+    [SerializeField] private float pushForce = 2f;
+
     private MyActions controls;
+    private CharacterController controller;
     private Vector2 moveInput;
+    private float pitch;
+    private float verticalVelocity;
 
     private void Awake()
     {
-        // Initialize the generated PlayerControls class.
         controls = new MyActions();
+        controller = GetComponent<CharacterController>();
+    }
+
+    private void Start()
+    {
+        if (lockCursor)
+        {
+            Cursor.lockState = CursorLockMode.Locked;
+            Cursor.visible = false;
+        }
     }
 
     private void OnEnable()
     {
-        // Enable the Player action map.
         controls.CharacterController.Enable();
-        // Subscribe to the Move action's performed and canceled events.
         controls.CharacterController.Movement.performed += OnMove;
         controls.CharacterController.Movement.canceled += OnMove;
     }
 
     private void OnDisable()
     {
-        // Unsubscribe and disable the action map.
         controls.CharacterController.Movement.performed -= OnMove;
         controls.CharacterController.Movement.canceled -= OnMove;
         controls.CharacterController.Disable();
     }
 
-    // This method gets called whenever the "Move" action value changes.
     private void OnMove(InputAction.CallbackContext context)
     {
-        // Read the Vector2 value from the action.
         moveInput = context.ReadValue<Vector2>();
     }
 
     private void Update()
     {
-        // Use the moveInput vector to update player movement.
-        Vector3 movement = new Vector3(moveInput.x, 0, moveInput.y);
-        transform.Translate(movement * Time.deltaTime * 5f);
+        HandleLook();
+        HandleMovement();
     }
 
-    void OnControllerColliderHit(ControllerColliderHit hit)
+    private void HandleLook()
+    {
+        if (Mouse.current == null || cameraTransform == null) return;
+
+        Vector2 delta = Mouse.current.delta.ReadValue() * mouseSensitivity;
+
+        // Horizontal rotation
+        transform.Rotate(Vector3.up * delta.x);
+
+        // Vertical rotation
+        pitch -= delta.y;
+        pitch = Mathf.Clamp(pitch, minPitch, maxPitch);
+        cameraTransform.localRotation = Quaternion.Euler(pitch, 0f, 0f);
+
+        // Press Escape to free the cursor
+        if (Keyboard.current != null && Keyboard.current.escapeKey.wasPressedThisFrame)
+        {
+            Cursor.lockState = CursorLockMode.None;
+            Cursor.visible = true;
+        }
+    }
+
+    private void HandleMovement()
+    {
+        // Player's movement
+        Vector3 movement = new Vector3(moveInput.x, 0, moveInput.y);
+        movement = transform.TransformDirection(movement) * moveSpeed;
+
+        // Gravity
+        if (controller.isGrounded && verticalVelocity < 0f)
+        {
+            verticalVelocity = -2f;
+        }
+
+        verticalVelocity += Physics.gravity.y * Time.deltaTime;
+        movement.y = verticalVelocity;
+
+        controller.Move(movement * Time.deltaTime);
+    }
+
+    private void OnControllerColliderHit(ControllerColliderHit hit)
     {
         Rigidbody rb = hit.collider.attachedRigidbody;
 
-        // Ignore if no Rigidbody or it's kinematic
         if (rb == null || rb.isKinematic) return;
 
-        // Only push horizontally (ignore y) if this desired
+        if (hit.moveDirection.y < -0.3f) return;
+
+        // Only push horizontally
         Vector3 pushDir = new Vector3(hit.moveDirection.x, 0, hit.moveDirection.z);
-
-        // Apply force
-        float pushForce = 2f;
-        rb.AddForce(pushDir * pushForce, ForceMode.Impulse);
+        rb.AddForce(pushDir * pushForce, ForceMode.Force);
     }
-
 }
