@@ -100,6 +100,15 @@ public partial class @MyActions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""Cast"",
+                    ""type"": ""Button"",
+                    ""id"": ""6272f18a-80ad-4676-84d7-39b770479b19"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -168,6 +177,17 @@ public partial class @MyActions: IInputActionCollection2, IDisposable
                     ""action"": ""Movement"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""168be88d-b566-4271-b379-ed4a5b62f946"",
+                    ""path"": ""<Mouse>/leftButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Cast"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -183,6 +203,7 @@ public partial class @MyActions: IInputActionCollection2, IDisposable
         // CharacterController
         m_CharacterController = asset.FindActionMap("CharacterController", throwIfNotFound: true);
         m_CharacterController_Movement = m_CharacterController.FindAction("Movement", throwIfNotFound: true);
+        m_CharacterController_Cast = m_CharacterController.FindAction("Cast", throwIfNotFound: true);
     }
 
     ~@MyActions()
@@ -264,6 +285,7 @@ public partial class @MyActions: IInputActionCollection2, IDisposable
     private readonly InputActionMap m_CharacterController;
     private List<ICharacterControllerActions> m_CharacterControllerActionsCallbackInterfaces = new List<ICharacterControllerActions>();
     private readonly InputAction m_CharacterController_Movement;
+    private readonly InputAction m_CharacterController_Cast;
     /// <summary>
     /// Provides access to input actions defined in input action map "CharacterController".
     /// </summary>
@@ -279,6 +301,10 @@ public partial class @MyActions: IInputActionCollection2, IDisposable
         /// Provides access to the underlying input action "CharacterController/Movement".
         /// </summary>
         public InputAction @Movement => m_Wrapper.m_CharacterController_Movement;
+        /// <summary>
+        /// Provides access to the underlying input action "CharacterController/Cast".
+        /// </summary>
+        public InputAction @Cast => m_Wrapper.m_CharacterController_Cast;
         /// <summary>
         /// Provides access to the underlying input action map instance.
         /// </summary>
@@ -308,6 +334,9 @@ public partial class @MyActions: IInputActionCollection2, IDisposable
             @Movement.started += instance.OnMovement;
             @Movement.performed += instance.OnMovement;
             @Movement.canceled += instance.OnMovement;
+            @Cast.started += instance.OnCast;
+            @Cast.performed += instance.OnCast;
+            @Cast.canceled += instance.OnCast;
         }
 
         /// <summary>
@@ -322,6 +351,9 @@ public partial class @MyActions: IInputActionCollection2, IDisposable
             @Movement.started -= instance.OnMovement;
             @Movement.performed -= instance.OnMovement;
             @Movement.canceled -= instance.OnMovement;
+            @Cast.started -= instance.OnCast;
+            @Cast.performed -= instance.OnCast;
+            @Cast.canceled -= instance.OnCast;
         }
 
         /// <summary>
@@ -382,5 +414,12 @@ public partial class @MyActions: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnMovement(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "Cast" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnCast(InputAction.CallbackContext context);
     }
 }
