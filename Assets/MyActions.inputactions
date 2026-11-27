@@ -14,15 +14,6 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": true
-                },
-                {
-                    "name": "Cast",
-                    "type": "Button",
-                    "id": "6272f18a-80ad-4676-84d7-39b770479b19",
-                    "expectedControlType": "",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -91,17 +82,6 @@
                     "action": "Movement",
                     "isComposite": false,
                     "isPartOfComposite": true
-                },
-                {
-                    "name": "",
-                    "id": "168be88d-b566-4271-b379-ed4a5b62f946",
-                    "path": "<Mouse>/leftButton",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Cast",
-                    "isComposite": false,
-                    "isPartOfComposite": false
                 }
             ]
         }

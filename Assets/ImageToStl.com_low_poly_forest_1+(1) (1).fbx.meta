@@ -1,44 +1,9 @@
 fileFormatVersion: 2
-guid: 98c9873f61657e04790c90fead63cd09
+guid: a905854ae8b52b14c8798182046d7b8c
 ModelImporter:
   serializedVersion: 24200
   internalIDToNameTable: []
-  externalObjects:
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: bark
-    second: {fileID: 2100000, guid: 6d90d7c1c07341f419ebd3669eb790bf, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: grnd
-    second: {fileID: 2100000, guid: 4ab77afdd8d5f0e488f5f701e2025160, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: leafs
-    second: {fileID: 2100000, guid: 0c669178ea24a674b88c15dd37b8fd2c, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: petal_a
-    second: {fileID: 2100000, guid: 394ba0c3b559ce04d894e6b59e6f2fd1, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: petal_b
-    second: {fileID: 2100000, guid: ef8a4b8309d86f74dada81a252b7859f, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: slope
-    second: {fileID: 2100000, guid: 267a55436566f5c438a533e18464b34a, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: water
-    second: {fileID: 2100000, guid: b867cac8fd058224cb634366198ffee1, type: 2}
+  externalObjects: {}
   materials:
     materialImportMode: 2
     materialName: 0
